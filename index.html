@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .circle {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        margin: auto;
+        position: relative;
+      }
+      .circle > div {
+        width: 100%;
+        height: 50%;
+        display: flex;
+      }
+      .col > div {
+        width: 50%;
+        height: 100%;
+        border: 1px solid;
+        cursor: pointer;
+      }
+      .blink {
+        background-color: white !important;
+        /* this is required to override default color */
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        width: 50vw;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      "
+    >
+      <div class="circle">
+        <!-- <div
+          style="width: 100%; border: 1px solid; height: 0%;position:absolute;margin-top:50%"
+        ></div>
+        <div
+          style="width: 0%; border: 1px solid; height: 100%; margin-left: 50%"
+        ></div> -->
+        <div class="col">
+          <div style="border-radius: 100% 0 0 0; background-color: red"></div>
+          <div style="border-radius: 0 100% 0 0; background-color: blue"></div>
+        </div>
+        <div class="col">
+          <div
+            style="border-radius: 0 0 0 100%; background-color: yellow"
+          ></div>
+          <div style="border-radius: 0 0 100% 0; background-color: green"></div>
+        </div>
+      </div>
+      <button id="btn" style="width: 100px; padding: 10px; cursor: pointer">
+        start the game
+      </button>
+      <p id="level"> </p>
+    </div>
+  </body>
+  <script>
+    let level = 0;
+    let pattern = [],active=false;
+    const runpattern = (pattern) => {
+     active=true
+      let x = document.getElementsByClassName("col"),
+        y = [];
+      console.log(x);
+      for (let el of x) {
+        y = [...y, ...el.querySelectorAll("div")];
+      }
+      console.log(y, pattern);
+      for (let i = 0; i < level; i++) {
+        setTimeout(() => {
+          console.log(i);
+          y[pattern[i]].classList.add("blink");
+        }, 1000 * i);
+        setTimeout(() => {
+          console.log("removing blink ", i + 1);
+          y[pattern[i]].classList.remove("blink");
+        }, 1000 * (i + 1));
+      }
+    };
+    document.getElementById("btn").addEventListener("click", () => {
+      console.log("test");
+      level++;
+      pattern.push(Math.floor(Math.random() * 4));
+      runpattern(pattern);
+      document.getElementById("level").innerHTML = `level: ${level}`;
+    });
+    document.getElementById("level").innerHTML = `level: ${level}`;
+  </script>
+</html>
